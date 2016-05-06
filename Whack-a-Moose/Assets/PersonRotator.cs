@@ -19,11 +19,7 @@ public class PersonRotator : MonoBehaviour {
     }
 
     void Update() {
-        if ( Input.GetKeyUp( KeyCode.A ) ) {
-            Rotate();
-        } else if ( Input.GetKeyUp( KeyCode.S ) ) {
-            RotateBack();
-        }
+        
     }
 
     public void Rotate() {
@@ -33,7 +29,6 @@ public class PersonRotator : MonoBehaviour {
                 var euler = Quaternion.Euler( 0, value, 0 );
                 N1.transform.rotation = euler;
                 N2.transform.rotation = euler;
-                //transform.rotation = Quaternion.Euler( 0, value, 0 );
                 if ( value >= 90 && s1.enabled ) {
                     s1.enabled = false;
                     s2.enabled = true;
@@ -50,7 +45,6 @@ public class PersonRotator : MonoBehaviour {
                 var euler = Quaternion.Euler( 0, value, 0 );
                 N1.transform.rotation = euler;
                 N2.transform.rotation = euler;
-                //transform.rotation = Quaternion.Euler( 0, value, 0 );
                 if ( value <= 90 && s2.enabled ) {
                     s1.enabled = true;
                     s2.enabled = false;
