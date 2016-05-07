@@ -30,4 +30,8 @@ public class RotationWizard : MonoBehaviour {
 
         yield break;
     }
+
+    public void Score() {
+
+    }
 }

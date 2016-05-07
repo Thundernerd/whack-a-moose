@@ -13,6 +13,11 @@ public class PersonRotator : MonoBehaviour {
     private Image img;
     private Text txt;
 
+    private KeyCode key;
+
+    [Component( "Main Camera" )]
+    private RotationWizard wizard;
+
     void Start() {
         s1 = N1.GetComponent<SpriteRenderer>();
         s2 = N2.GetComponent<SpriteRenderer>();
@@ -23,16 +28,20 @@ public class PersonRotator : MonoBehaviour {
         s2.enabled = false;
         img.enabled = false;
         txt.enabled = false;
+
+        this.LoadComponents();
     }
 
     void Update() {
-        //if ( Input.GetKeyUp(...) ) {
-
-        //}
+        if ( Input.GetKeyUp( key ) ) {
+            wizard.Score();
+            RotateBack();
+        }
     }
 
     public void SetLetter( string value ) {
         txt.text = value;
+        key = Event.KeyboardEvent( value ).keyCode;
     }
 
     public void Rotate() {
