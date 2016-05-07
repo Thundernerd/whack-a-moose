@@ -18,7 +18,7 @@ public class PersonRotator : MonoBehaviour {
     [Component( "Main Camera" )]
     private RotationWizard wizard;
 
-    void Start() {
+    void Awake() {
         s1 = N1.GetComponent<SpriteRenderer>();
         s2 = N2.GetComponent<SpriteRenderer>();
 
