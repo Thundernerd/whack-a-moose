@@ -18,6 +18,11 @@ public class PersonRotator : MonoBehaviour {
     [Component( "Main Camera" )]
     private RotationWizard wizard;
 
+    public bool Rotated = false;
+
+    private bool shouldRotateBack = false;
+    private float delay = 0f;
+
     void Awake() {
         s1 = N1.GetComponent<SpriteRenderer>();
         s2 = N2.GetComponent<SpriteRenderer>();
@@ -33,7 +38,19 @@ public class PersonRotator : MonoBehaviour {
     }
 
     void Update() {
-        if ( Input.GetKeyUp( key ) ) {
+        if ( Rotated && shouldRotateBack ) {
+            delay -= Time.deltaTime;
+            if ( delay < 0 ) {
+                shouldRotateBack = false;
+
+                wizard.Fail();
+                RotateBack();
+            }
+        }
+
+        if ( Input.GetKeyUp( key ) && Rotated ) {
+            shouldRotateBack = false;
+
             wizard.Score();
             RotateBack();
         }
@@ -44,7 +61,13 @@ public class PersonRotator : MonoBehaviour {
         key = Event.KeyboardEvent( value ).keyCode;
     }
 
-    public void Rotate() {
+    public void Rotate( float turnBackDelay = 0 ) {
+        if (turnBackDelay > 0) {
+            shouldRotateBack = true;
+            delay = turnBackDelay;
+        }
+
+        Rotated = true;
         LeanTween.cancel( gameObject );
         LeanTween.value( gameObject, 0, 180, 0.35f ).setEase( LeanTweenType.easeOutBack )
             .setOnUpdate( ( float value ) => {
@@ -63,6 +86,7 @@ public class PersonRotator : MonoBehaviour {
     }
 
     public void RotateBack() {
+        Rotated = false;
         LeanTween.cancel( gameObject );
         LeanTween.value( gameObject, 180, 0, 0.35f ).setEase( LeanTweenType.easeOutBack )
             .setOnUpdate( ( float value ) => {

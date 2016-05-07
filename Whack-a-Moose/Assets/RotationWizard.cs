@@ -1,6 +1,7 @@
 ﻿using System.Collections;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RotationWizard : MonoBehaviour {
 
@@ -8,7 +9,10 @@ public class RotationWizard : MonoBehaviour {
     public PersonRotator[] Peeps;
 
     private string[] chars = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };//, "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+
+    private float timeInBetween = 2f;
     private int score = 0;
+    private bool startedRandom = false;
 
     void Start() {
         var t = chars.ToList();
@@ -32,6 +36,26 @@ public class RotationWizard : MonoBehaviour {
 
         if ( score < 6 ) {
             Peeps[score].Rotate();
+        } else if ( !startedRandom ) {
+            startedRandom = true;
+            StartCoroutine( RandomRotates() );
         }
+
+        GameObject.Find( "Text" ).GetComponent<Text>().text = "Score: " + score;
+    }
+
+    public void Fail() {
+        score--;
+        GameObject.Find( "Text" ).GetComponent<Text>().text = "Score: " + score;
+    }
+
+    private IEnumerator RandomRotates() {
+        while ( true ) {
+            Peeps[Random.Range( 0, 6 )].Rotate( timeInBetween );
+            yield return new WaitForSeconds( timeInBetween );
+            timeInBetween *= 0.98f;
+        }
+
+        //yield break;
     }
 }
